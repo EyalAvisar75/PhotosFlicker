@@ -58,13 +58,29 @@
 			children = (
 				6C43566E26BBD1C8008CC46C /* AppDelegate.swift */,
 				6C43567026BBD1C8008CC46C /* SceneDelegate.swift */,
-				6C43567226BBD1C8008CC46C /* PhotosController.swift */,
-				6C43567426BBD1C8008CC46C /* Main.storyboard */,
-				6C43567726BBD1CD008CC46C /* Assets.xcassets */,
-				6C43567926BBD1CD008CC46C /* LaunchScreen.storyboard */,
 				6C43567C26BBD1CD008CC46C /* Info.plist */,
+				6C43567726BBD1CD008CC46C /* Assets.xcassets */,
+				6C43568226BBDA0E008CC46C /* Controllers */,
+				6C43568326BBDA3D008CC46C /* Viewa */,
 			);
 			path = PhotosFlicker;
+			sourceTree = "<group>";
+		};
+		6C43568226BBDA0E008CC46C /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				6C43567226BBD1C8008CC46C /* PhotosController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		6C43568326BBDA3D008CC46C /* Viewa */ = {
+			isa = PBXGroup;
+			children = (
+				6C43567426BBD1C8008CC46C /* Main.storyboard */,
+				6C43567926BBD1CD008CC46C /* LaunchScreen.storyboard */,
+			);
+			path = Viewa;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
