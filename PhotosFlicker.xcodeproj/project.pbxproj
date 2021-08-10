@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C10364226C2690700435866 /* TaggedPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C10364126C2690700435866 /* TaggedPhoto.swift */; };
+		6C10364426C269D100435866 /* TaggedPhotosModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C10364326C269D100435866 /* TaggedPhotosModel.swift */; };
 		6C43566F26BBD1C8008CC46C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C43566E26BBD1C8008CC46C /* AppDelegate.swift */; };
 		6C43567126BBD1C8008CC46C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C43567026BBD1C8008CC46C /* SceneDelegate.swift */; };
 		6C43567326BBD1C8008CC46C /* PhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C43567226BBD1C8008CC46C /* PhotosController.swift */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6C10364126C2690700435866 /* TaggedPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggedPhoto.swift; sourceTree = "<group>"; };
+		6C10364326C269D100435866 /* TaggedPhotosModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaggedPhotosModel.swift; sourceTree = "<group>"; };
 		6C43566B26BBD1C8008CC46C /* PhotosFlicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotosFlicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C43566E26BBD1C8008CC46C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6C43567026BBD1C8008CC46C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -37,6 +41,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6C10364026C268D600435866 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6C10364126C2690700435866 /* TaggedPhoto.swift */,
+				6C10364326C269D100435866 /* TaggedPhotosModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		6C43566226BBD1C7008CC46C = {
 			isa = PBXGroup;
 			children = (
@@ -61,7 +74,8 @@
 				6C43567C26BBD1CD008CC46C /* Info.plist */,
 				6C43567726BBD1CD008CC46C /* Assets.xcassets */,
 				6C43568226BBDA0E008CC46C /* Controllers */,
-				6C43568326BBDA3D008CC46C /* Viewa */,
+				6C10364026C268D600435866 /* Models */,
+				6C43568326BBDA3D008CC46C /* Views */,
 			);
 			path = PhotosFlicker;
 			sourceTree = "<group>";
@@ -74,13 +88,13 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
-		6C43568326BBDA3D008CC46C /* Viewa */ = {
+		6C43568326BBDA3D008CC46C /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				6C43567426BBD1C8008CC46C /* Main.storyboard */,
 				6C43567926BBD1CD008CC46C /* LaunchScreen.storyboard */,
 			);
-			path = Viewa;
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,8 +168,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C10364426C269D100435866 /* TaggedPhotosModel.swift in Sources */,
 				6C43567326BBD1C8008CC46C /* PhotosController.swift in Sources */,
 				6C43566F26BBD1C8008CC46C /* AppDelegate.swift in Sources */,
+				6C10364226C2690700435866 /* TaggedPhoto.swift in Sources */,
 				6C43567126BBD1C8008CC46C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
