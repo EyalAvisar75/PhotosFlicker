@@ -16,6 +16,9 @@ class PhotosController: UIViewController, UINavigationControllerDelegate {
     var currentLocation: CLLocation?
     var photosModel = TaggedPhotosModel()
     
+    //MARK:- IBOutlets
+    @IBOutlet weak var taggedPhotosCollection: UICollectionView!
+    
     //MARK:- IBActions
     @IBAction func printTaggedImageData() {
         getImageData()
@@ -56,8 +59,10 @@ class PhotosController: UIViewController, UINavigationControllerDelegate {
         
         var fileNameStr = ""
         
+        let details = photosModel.getFilePath()
+        
         if let data = image.pngData() {
-            let filename = URL(fileURLWithPath: photosModel.getFilePath())
+            let filename = URL(fileURLWithPath: details.finalPath)
             fileNameStr = filename.path
             try? data.write(to: filename)
         }
@@ -66,23 +71,12 @@ class PhotosController: UIViewController, UINavigationControllerDelegate {
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
         
-        let taggedPhoto = TaggedPhoto(name: fileNameStr, latitude: latitude, longitude: longitude, photoURLString: fileNameStr)
+        let taggedPhoto = TaggedPhoto(name: details.name, latitude: latitude, longitude: longitude, photoURLString: fileNameStr)
         
         photosModel.addPhoto(photo: taggedPhoto)
     }
     
     func getImageData() {
-//        let path = getFilePath()
-//        print(path)
-//
-//        let image = UIImage(contentsOfFile: path)
-//        if image != nil {
-//            print("has image")
-//        }
-//        else {
-//            print("No image")
-//        }
-        
         print("model",photosModel.getModel())
 //        let last =  photosModel.getModel().count
 //
@@ -129,9 +123,49 @@ extension PhotosController: UIImagePickerControllerDelegate {
         saveTaggedImage(image)
                 
         picker.dismiss(animated: true)
+        
+        taggedPhotosCollection.reloadData()
         print(image.size)
     }
 }
 
+extension PhotosController: UICollectionViewDelegate {
+    
+}
+
+extension PhotosController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return photosModel.getModel().count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.taggedPhotoCell.rawValue, for: indexPath) as! TaggedPhotoCollectionCell
+        
+        cell.backgroundColor = .green
+        
+        let path = photosModel.getFilePath().path
+        let name = photosModel.getPhoto(at: indexPath.row).name + ".jpg"
+        
+        print("pathName", path + "/" + name)
+        
+        let image = UIImage(contentsOfFile: path + "/" + name)
+        if image != nil {
+            print("has image")
+        }
+        else {
+            print("No image")
+        }
+        
+        cell.imageView.image = image
+        
+        let latitude = photosModel.getPhoto(at: indexPath.row).latitude
+        let longitude = photosModel.getPhoto(at: indexPath.row).longitude
+        
+        cell.locationLabel.text = "\(name): \(latitude), \(longitude)"
+        
+        return cell
+    }    
+}
 
 

@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -29,20 +30,76 @@
                                     <action selector="pictureThat" destination="BYZ-38-t0r" eventType="touchUpInside" id="kbn-3t-Ac7"/>
                                 </connections>
                             </button>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="76Y-RG-sK5">
+                                <rect key="frame" x="0.0" y="194" width="414" height="668"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="lMX-O9-X9t">
+                                    <size key="itemSize" width="414" height="679"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="taggedPhotoCell" id="X9u-LC-Q5l" customClass="TaggedPhotoCollectionCell" customModule="PhotosFlicker" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="679"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="RAL-od-Kli">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="679"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w4L-ah-FfA">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="642.5"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8VP-KM-Lm1">
+                                                    <rect key="frame" x="0.0" y="650.5" width="414" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="w4L-ah-FfA" firstAttribute="leading" secondItem="RAL-od-Kli" secondAttribute="leading" id="CjK-uN-yx7"/>
+                                                <constraint firstItem="w4L-ah-FfA" firstAttribute="top" secondItem="RAL-od-Kli" secondAttribute="top" id="SLu-rj-9co"/>
+                                                <constraint firstItem="8VP-KM-Lm1" firstAttribute="top" secondItem="w4L-ah-FfA" secondAttribute="bottom" constant="8" id="WFS-UD-hB9"/>
+                                                <constraint firstAttribute="bottom" secondItem="8VP-KM-Lm1" secondAttribute="bottom" constant="8" id="cAJ-hD-EfI"/>
+                                                <constraint firstItem="8VP-KM-Lm1" firstAttribute="leading" secondItem="RAL-od-Kli" secondAttribute="leading" id="d6a-xK-OBk"/>
+                                                <constraint firstAttribute="trailing" secondItem="8VP-KM-Lm1" secondAttribute="trailing" id="nen-rg-Qdy"/>
+                                                <constraint firstAttribute="trailing" secondItem="w4L-ah-FfA" secondAttribute="trailing" id="pJl-m5-OoB"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="414" height="679"/>
+                                        <connections>
+                                            <outlet property="imageView" destination="w4L-ah-FfA" id="MEi-on-yYn"/>
+                                            <outlet property="locationLabel" destination="8VP-KM-Lm1" id="OQW-m3-Rud"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="vbG-ci-iTr"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="UN8-bV-IX2"/>
+                                </connections>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Rku-cb-dcw" secondAttribute="trailing" constant="45" id="DP6-By-KyE"/>
+                            <constraint firstItem="76Y-RG-sK5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Fhy-1y-JF2"/>
                             <constraint firstItem="H1D-YN-h6x" firstAttribute="baseline" secondItem="Rku-cb-dcw" secondAttribute="baseline" id="J0b-nD-Qje"/>
+                            <constraint firstItem="76Y-RG-sK5" firstAttribute="top" secondItem="Rku-cb-dcw" secondAttribute="bottom" constant="50" id="MCR-7D-Usv"/>
                             <constraint firstItem="H1D-YN-h6x" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="70" id="Pn0-79-VG3"/>
                             <constraint firstItem="H1D-YN-h6x" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="46" id="g3T-bv-J9k"/>
+                            <constraint firstItem="76Y-RG-sK5" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="mTA-8c-9Nj"/>
+                            <constraint firstItem="76Y-RG-sK5" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="pJl-Vd-crP"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="taggedPhotosCollection" destination="76Y-RG-sK5" id="d64-6V-dsg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-64" y="139"/>
+            <point key="canvasLocation" x="-65.217391304347828" y="138.61607142857142"/>
         </scene>
     </scenes>
 </document>

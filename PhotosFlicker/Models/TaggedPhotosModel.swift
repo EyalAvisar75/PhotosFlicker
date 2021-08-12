@@ -88,14 +88,14 @@ struct TaggedPhotosModel {
         photosModel.append(photo)
     }
     
-    mutating func getFilePath() -> String {
+    mutating func getFilePath() -> (path: String, name: String, finalPath: String) {
         let pictureName = Int.random(in: 1...10000)
         currentPictureName = String(pictureName)
         let finalPath = documentDirectoryPath.appendingPathComponent("\(pictureName).jpg")
         /// Your destination file path
         
-        print(finalPath.path)
-        return finalPath.path
+        print("final path",finalPath.path)
+        return (documentDirectoryPath.path, currentPictureName, finalPath.path)
     }
     
     
