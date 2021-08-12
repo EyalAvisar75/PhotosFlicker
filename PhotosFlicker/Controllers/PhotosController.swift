@@ -9,9 +9,11 @@
 import UIKit
 import CoreLocation
 
-class PhotosController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class PhotosController: UIViewController, UINavigationControllerDelegate {
     
     //MARK:- Properties
+    private var locationManager: CLLocationManager!
+    var currentLocation: CLLocation?
     var photosModel = TaggedPhotosModel()
     
     //MARK:- IBActions
@@ -19,17 +21,21 @@ class PhotosController: UIViewController, UINavigationControllerDelegate, UIImag
         getImageData()
     }
     
+    @IBAction func pictureThat() {
+        takeAPicture()
+    }
+    
     //MARK:- View Lifecycle
     override func viewDidLoad() {
+        authorizeLocationRequests()
         super.viewDidLoad()
-        
-        view.backgroundColor = .green
-        takeAPicture()
     }
     
     //MARK:- Helper Methods
     
     func takeAPicture() {
+//        getUserLocation()
+
         let imageController = UIImagePickerController()
         
         imageController.sourceType = UIImagePickerController.isSourceTypeAvailable(.camera) ? .camera : .photoLibrary
@@ -39,37 +45,30 @@ class PhotosController: UIViewController, UINavigationControllerDelegate, UIImag
         present(imageController, animated: true)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        print("In func imagePickerController")
-        
-        guard let image = info[.editedImage] as? UIImage else {
-            print("No image found")
-            return
-        }
-        
-        saveTaggedImage(image)
-                
-        picker.dismiss(animated: true)
-        print(image.size)
-    }
+    
     
     
     func saveTaggedImage(_ image:UIImage) {
+        guard let location = currentLocation else {
+            print("No current location")
+            return
+        }
+        
         var fileNameStr = ""
         
         if let data = image.pngData() {
-            
             let filename = URL(fileURLWithPath: photosModel.getFilePath())
             fileNameStr = filename.path
             try? data.write(to: filename)
         }
         
-        let location = CLLocation(latitude: 30.7046, longitude: 76.7179)
-
-        var taggedPhoto = TaggedPhoto(name: fileNameStr, latitude: 30.7046, longitude: 76.7179, photoURLString: fileNameStr)
         
-        photosModel.addPhoto(photo: taggedPhoto)        
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        
+        let taggedPhoto = TaggedPhoto(name: fileNameStr, latitude: latitude, longitude: longitude, photoURLString: fileNameStr)
+        
+        photosModel.addPhoto(photo: taggedPhoto)
     }
     
     func getImageData() {
@@ -93,5 +92,46 @@ class PhotosController: UIViewController, UINavigationControllerDelegate, UIImag
 //            print("lastTaggedPhoto", lastTaggedPhoto)
 //        }
     }
+    
+    
+    
 }
+
+extension PhotosController: CLLocationManagerDelegate {
+    func authorizeLocationRequests() {
+        if (CLLocationManager.locationServicesEnabled())
+        {
+            locationManager = CLLocationManager()
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.requestAlwaysAuthorization()
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            currentLocation = location
+        }
+    }
+}
+
+extension PhotosController: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        print("In func imagePickerController")
+        
+        guard let image = info[.editedImage] as? UIImage else {
+            print("No image found")
+            return
+        }
+        
+        saveTaggedImage(image)
+                
+        picker.dismiss(animated: true)
+        print(image.size)
+    }
+}
+
+
 
