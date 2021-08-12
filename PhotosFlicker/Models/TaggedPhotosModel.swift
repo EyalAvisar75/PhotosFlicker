@@ -25,6 +25,7 @@ struct TaggedPhotosModel {
     private var currentPictureName = "0"
     
     mutating func populatePhotosModel() {
+        photosModel = []
         var taggedPhotoJsons = [URL]()
         do {
             let documentsURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)

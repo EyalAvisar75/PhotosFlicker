@@ -148,6 +148,7 @@ extension PhotosController: UICollectionViewDataSource {
         let name = photosModel.getPhoto(at: indexPath.row).name + ".jpg"
         
         print("pathName", path + "/" + name)
+        print("count", photosModel.getModel().count)
         
         let image = UIImage(contentsOfFile: path + "/" + name)
         if image != nil {
