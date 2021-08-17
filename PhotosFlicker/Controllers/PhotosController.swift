@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import Firebase
 
 class PhotosController: UIViewController, UINavigationControllerDelegate {
     
@@ -15,6 +16,8 @@ class PhotosController: UIViewController, UINavigationControllerDelegate {
     private var locationManager: CLLocationManager!
     var currentLocation: CLLocation?
     var photosModel = TaggedPhotosModel()
+    var ref: DatabaseReference!
+
     
     //MARK:- IBOutlets
     @IBOutlet weak var taggedPhotosCollection: UICollectionView!
@@ -30,8 +33,27 @@ class PhotosController: UIViewController, UINavigationControllerDelegate {
     
     //MARK:- View Lifecycle
     override func viewDidLoad() {
-        authorizeLocationRequests()
         super.viewDidLoad()
+        
+        authorizeLocationRequests()
+        configureDatabase()
+    }
+    
+    //MARK:- Firebase Methods
+    
+    func configureDatabase() {
+        ref = Database.database().reference()
+    }
+    
+    func saveTaggedPhotoData(taggedPhoto: TaggedPhoto) {
+        
+        guard NetworkManager.shared.isWifi else {
+            print("Can't store to firebase when wifi is off")
+            return
+        }
+        
+        let id = taggedPhoto.photoId.uuidString
+        ref.child("tagged photos").child(id).setValue(["name": taggedPhoto.name, "latitude": taggedPhoto.latitude, "longitude": taggedPhoto.longitude, "url": taggedPhoto.photoURLString])
     }
     
     //MARK:- Helper Methods
@@ -74,6 +96,9 @@ class PhotosController: UIViewController, UINavigationControllerDelegate {
         let taggedPhoto = TaggedPhoto(name: details.name, latitude: latitude, longitude: longitude, photoURLString: fileNameStr)
         
         photosModel.addPhoto(photo: taggedPhoto)
+        
+        // Add to firebase
+        saveTaggedPhotoData(taggedPhoto: taggedPhoto)
     }
     
     func getImageData() {

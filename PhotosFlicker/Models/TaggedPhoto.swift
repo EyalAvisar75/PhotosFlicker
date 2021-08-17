@@ -9,6 +9,7 @@
 import Foundation
 
 struct TaggedPhoto: Codable {
+    let photoId = UUID()
     let name: String
     let latitude: Double
     let longitude: Double
