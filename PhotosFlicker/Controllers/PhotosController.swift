@@ -16,8 +16,8 @@ class PhotosController: UIViewController, UINavigationControllerDelegate {
     private var locationManager: CLLocationManager!
     var currentLocation: CLLocation?
     var photosModel = TaggedPhotosModel()
-    var ref: DatabaseReference!
-
+    var databaseRef: DatabaseReference!
+    var storageRef: StorageReference!
     
     //MARK:- IBOutlets
     @IBOutlet weak var taggedPhotosCollection: UICollectionView!
@@ -37,34 +37,62 @@ class PhotosController: UIViewController, UINavigationControllerDelegate {
         
         authorizeLocationRequests()
         configureDatabase()
+        configureStorage()
     }
     
     //MARK:- Firebase Methods
     
     func configureDatabase() {
-        ref = Database.database().reference()
+        databaseRef = Database.database().reference()
     }
     
-    func saveTaggedPhotoData(taggedPhoto: TaggedPhoto) {
+    func configureStorage() {
+        let storage = Storage.storage()
+        storageRef = storage.reference()
+    }
+    
+    func saveTaggedPhotoToFirebase(taggedPhoto: TaggedPhoto) {
         
         guard NetworkManager.shared.isWifi else {
-            print("Can't store to firebase when wifi is off")
+            print("Can't store data to firebaseDatabase when wifi is off")
             return
         }
         
         let id = taggedPhoto.photoId.uuidString
-        ref.child("tagged photos").child(id).setValue(["name": taggedPhoto.name, "latitude": taggedPhoto.latitude, "longitude": taggedPhoto.longitude, "url": taggedPhoto.photoURLString])
+        databaseRef.child("tagged photos").child(id).setValue(["name": taggedPhoto.name, "latitude": taggedPhoto.latitude, "longitude": taggedPhoto.longitude, "url": taggedPhoto.photoURLString])
     }
+    
+    func saveImageToStorage(image: UIImage, imageName: String, imageUrl: String) {
+        
+        guard NetworkManager.shared.isWifi else {
+            print("Can't store image to firebaseStorage when wifi is off")
+            return
+        }
+        
+        let photoRef = storageRef.child(imageName)
+        
+        photoRef.putFile(from: URL(fileURLWithPath: imageUrl), metadata: nil) { (metadata, error) in
+            guard metadata != nil else {
+                print("error:", error!.localizedDescription)
+                return
+            }
+            
+            print("Photo \(imageName) uploaded")
+        }
+    }
+    
+    
+    
     
     //MARK:- Helper Methods
     
     func takeAPicture() {
-//        getUserLocation()
-
+        //        getUserLocation()
+        
         let imageController = UIImagePickerController()
         
         imageController.sourceType = UIImagePickerController.isSourceTypeAvailable(.camera) ? .camera : .photoLibrary
-
+        
         imageController.allowsEditing = true
         imageController.delegate = self
         present(imageController, animated: true)
@@ -97,19 +125,23 @@ class PhotosController: UIViewController, UINavigationControllerDelegate {
         
         photosModel.addPhoto(photo: taggedPhoto)
         
-        // Add to firebase
-        saveTaggedPhotoData(taggedPhoto: taggedPhoto)
+        // Add to firebase database
+        saveTaggedPhotoToFirebase(taggedPhoto: taggedPhoto)
+        
+        //add to firebase storage
+        saveImageToStorage(image: image, imageName: taggedPhoto.name, imageUrl: taggedPhoto.photoURLString)
+
     }
     
     func getImageData() {
         print("model",photosModel.getModel())
-//        let last =  photosModel.getModel().count
-//
-//        if last > 0 {
-//            print(last)
-//            let lastTaggedPhoto = photosModel.getPhoto(at: last - 1)
-//            print("lastTaggedPhoto", lastTaggedPhoto)
-//        }
+        //        let last =  photosModel.getModel().count
+        //
+        //        if last > 0 {
+        //            print(last)
+        //            let lastTaggedPhoto = photosModel.getPhoto(at: last - 1)
+        //            print("lastTaggedPhoto", lastTaggedPhoto)
+        //        }
     }
     
     
@@ -146,7 +178,7 @@ extension PhotosController: UIImagePickerControllerDelegate {
         }
         
         saveTaggedImage(image)
-                
+        
         picker.dismiss(animated: true)
         
         taggedPhotosCollection.reloadData()
